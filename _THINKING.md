@@ -73,15 +73,56 @@
 
 ## Plan
 
-<!-- After reading, before you change any code.
-     - The task restated in your own words.
-     - The changes you expect to make, in order, and where you think each one
-       goes.
-     - For a bug: how you will reproduce it before fixing it.
-     - Approaches you considered and rejected, and why.
-     - Anything you are deliberately leaving out of scope.
-     Plans change. When yours does, leave this section as it is and record the
-     change as a Progress log entry. -->
+<!-- Plan
+
+ Task, restated
+There are 2 independent ways duplicate Solves rows (and 500s) can occur:
+1. Player submission race: If two requests are made correctly, both players pass the "already" test.
+   Given that, it would be beneficial to perform a "solved?" check before inserting and when the second one hits the unique.
+   constraint and 500s.
+2. Admin re-grade: no matter if a submission is correct, it always goes into a Solve,
+   Even if there is already such a constraint, hitting the same constraint.
+Both must not 500, and both have to have specific required.
+behaviour 200/already_solved for route 1, 400 for route 2.
+
+ Things I need to change, in order
+1. Tourney/exceptions/challenges.py — add ChallengeSolveException
+   Same as (plain Exception subclass, single message arg), but with no input/output parameters.
+   The adjacent exceptions in that module.
+Wrap the BaseChallenge.solve function in 2. Tourney/plugins/challenges/__init__.py.
+   inspects any insert operation that fails due to integrity constraint violation, rolls back the session and raises
+   ChallengeSolveException(...) from e.
+The attempt endpoint is located in 3. Tourney/api/v1/challenges.py (attempt endpoint).
+   Return 200 and display ChallengeSolveException from solve() to the user.
+   When the data.status property is "already_solved", the status is true.If data.status is "already_solved", the status property is true.
+   "already solved this".
+4. Tourney/api/v1/submissions.py (re-grade endpoint) — before inserting a
+   Solve on mark-correct (check for account keyed solve)
+   If it exists, return 400;
+   success: false, do not change the current submission/solve/fail data.
+
+ Before changing my work, how I will copy my work.
+- Route 2: reproducible directly in the browser as specified in the repro steps in
+  _TASK.md (create challenge, submit wrong then correct as player, then
+  When you see the 500, you can be sure that something is wrong and admin will re-grade the wrong submission to correct it — except the
+  IntegrityError in the server console.
+- Route 1: Not reliably repeatable with a double-click in the browser (task doc)
+  confirms this). Instead: get a test by using tests/helpers.py gen_solve
+  Drive immediately to "already solved" state directly from the put operation.
+  Once more, call BaseChallenge.solve(), this time with the same account/challenge, and expect the same result.Call BaseChallenge.solve() once again for the same account/challenge, and await the same result.
+  same IntegrityError. Need environ_base={"REMOTE_ADDR": "127.0.0.1"} on the
+  You might need to adjust the context used by test request since solve() uses get_ip() to retrieve the IP address of the client.
+
+ The ideas that were looked at and dismissed.Things that were thought about and ruled out.
+Fill in when you've really considered alternatives — e.g., did you consider using a different approach?
+Consider a pre-check, instead of catch-IntegrityError? why is catch-and-
+or for an upfront exists-check, rewrite and rollback.
+given it's a race?]
+
+ Out of scope
+Anything you are intentionally not touching (e.g. not addressing another).
+any other possible race conditions not involving the Fail-record path,
+do not alter the unique constraint [itself] -->
 
 ## Progress log
 
