@@ -37,7 +37,7 @@
 ### [23:45]
 
 <!-- - Read: _TASK.md (full)
-- Learned: two independent bugs: 
+- Learned: two independent bugs:
 - Route 1 is a race condition in
   POST /api/v1/challenges/attempt,two POSTs both succeed despite being passed the “already” parameter):
   The admin re-grade is route 2.
@@ -51,6 +51,24 @@
   How does solve() now recognize you have a question?How does solve() now recognize that you have a question
   - Open question: how does solve() currently key on account (user_id vs
   Need to test models/__init__.py's account_id hybrid property (team_id)
+-->
+
+[00:04]
+
+<!-- - Read: _ORIENTATION.md (full)
+- Learned: Tourney is a Flask monolith — one package serving server-rendered
+  pages and a REST API. The models are passed through the before_request chain of models for the request.
+  view/resource -> SQLAlchemy -> Jinja/Marshmallow response.
+- Surprised that: get_current_user_attrs() is memoized per-request — a change
+  before-request checks in the latter part of the user mid-request are not seen as a user request.
+  same cycle. Applies if the bug touches the request-scoped state.
+- Data model: Both Challenges and Submissions are single-table polymorphic.
+  Entries go into Solve / Fail split. The abstraction over "Account" is.
+  When writing to or reading from code that deals with: user-mode vs team-mode (account_id hybrid property)
+  solves must be able to execute in both modes.
+- Open question: where is BaseChallenge.solve() located and what is the equation it is solving?
+  Currently, does it occur when you insert a duplicate? Need to open
+  Tourney/plugins/challenges/ next.
 -->
 
 ## Plan
