@@ -144,7 +144,14 @@ do not alter the unique constraint [itself] -->
      wired through c/d.py" is exactly the kind of detail we want. Add as many
      entries as you need. -->
 
-### [HH:MM]
+### [00:39]
+<!-- 
+- System Python version: 3.14.3; Project python version: 3.11 is required. Installed 3.11
+  At the same time, create the venv with the command `py -3.11 -m venv .venv`.
+- The C accelerator from gevent failed to load the python execute: python serve.py
+  (`gevent._gevent_c_hub_local` missing). Tried `--disable-gevent` flag.
+  The next failure is: cmarkgfm -> \_cffi_backend missing. Fixed with
+  Run the following command to install the cffi package with the new version: `pip install cffi==1.17.1 --only-binary=:all: --force-reinstall`. -->
 
 ### [HH:MM]
 
