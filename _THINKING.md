@@ -28,7 +28,10 @@
        from it.
      - Open questions you cannot answer yet. -->
 
-### [HH:MM]
+### [21:15]
+<!-- - Read: README.md (full)
+- Learned: setup instructions, test command, code organization details, known issues
+-->
 
 ### [HH:MM]
 
