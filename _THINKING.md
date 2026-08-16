@@ -14,7 +14,7 @@
        based only on what you have seen so far? It is fine to be wrong.
      Then start reading. -->
 
-### [HH:MM] Starting
+### [21:00] Starting
 
 ## Reading notes
 
