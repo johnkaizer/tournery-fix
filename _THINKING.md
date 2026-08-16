@@ -29,11 +29,29 @@
      - Open questions you cannot answer yet. -->
 
 ### [21:15]
+
 <!-- - Read: README.md (full)
 - Learned: setup instructions, test command, code organization details, known issues
 -->
 
-### [HH:MM]
+### [23:45]
+
+<!-- - Read: _TASK.md (full)
+- Learned: two independent bugs: 
+- Route 1 is a race condition in
+  POST /api/v1/challenges/attempt,two POSTs both succeed despite being passed the “already” parameter):
+  The admin re-grade is route 2.
+  Unconditional INSERT (PATCH /api/v1/submissions/<id>).
+- Expected relevant code in: Tourney/plugins/challenges/__init__.py (for
+  The Tourney/api/v1/challengeTrial.py (solve endpoint) is the base endpoint.
+  Tourney/exceptions/challenges.py for ChallengeSolveException.
+- Accepted criteria are precise such as exception name/module path, HTTP codes etc.
+  (200 for route 1, 400 for route 2), and the "already solved this" message:
+  All the words in the substring have to be spelled exactly as they are in the string, not in the sense.
+  How does solve() now recognize you have a question?How does solve() now recognize that you have a question
+  - Open question: how does solve() currently key on account (user_id vs
+  Need to test models/__init__.py's account_id hybrid property (team_id)
+-->
 
 ## Plan
 
