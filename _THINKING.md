@@ -145,7 +145,8 @@ do not alter the unique constraint [itself] -->
      entries as you need. -->
 
 ### [00:39]
-<!-- 
+
+<!--
 - System Python version: 3.14.3; Project python version: 3.11 is required. Installed 3.11
   At the same time, create the venv with the command `py -3.11 -m venv .venv`.
 - The C accelerator from gevent failed to load the python execute: python serve.py
@@ -153,7 +154,24 @@ do not alter the unique constraint [itself] -->
   The next failure is: cmarkgfm -> \_cffi_backend missing. Fixed with
   Run the following command to install the cffi package with the new version: `pip install cffi==1.17.1 --only-binary=:all: --force-reinstall`. -->
 
-### [HH:MM]
+### [09:02]
+
+<!--
+If a player is found to be importing gevent elsewhere, they will be removed from the game.
+  --disable-gevent alone wasn't enough to disable gevent: (Tourney/utils/events/__init__.py),
+  I had to also install gevent properly, to get the same results as enough.
+- If next failures, same pattern, (compiled extension present in wheel but not
+  loadable): greenlet ("greenlet._greenlet"), Pillow ("PIL._imaging"),
+  Then add them with the version `rpds-py (rpds.rpds, a transitive dep via flask_restx)`.
+  jsonschema -> referencing).
+- The actual installed binary was inspected to find the root cause.
+  A Python 3.14 wheel was installed into: `rpds.cp314-win_amd64.pyd`
+  the 3.11 venv, meaning 'pip' was pointing to the wrong interpreter's pip
+- Despite activation of the venv, at some point.
+It was recommended to use the explicit form of pip install (i.e., python -m pip install) instead of the default command (pip).
+- Re-installing the active venv's interpreter in order to force resolution against it.
+  the affected packages with `--only-binary=:all: --force-reinstall`..
+   -->
 
 ### [HH:MM]
 
