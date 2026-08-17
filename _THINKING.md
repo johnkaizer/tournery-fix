@@ -173,7 +173,17 @@ It was recommended to use the explicit form of pip install (i.e., python -m pip 
   the affected packages with `--only-binary=:all: --force-reinstall`..
    -->
 
-### [HH:MM]
+### [18:28]
+
+<!--
+The next failures were similar: the extension compiled was in the wheel but was not loaded. This has happened so far for Pillow (PIL._imaging), and now for `rpds-py` (rpds.rpds) which is pulled in by `flask_restx → jsonschema → referencing`.
+
+After investigation of the installed binary, I discovered that the root cause was that the binary being used, rpds.cp314-win_amd64.pyd, was a built version of Python 3.14 in a virtual environment using Python 3.11. Thus, `pip` had been resolving the wrong Python install, despite the venv being activated.
+
+I solved this by running `python -m pip` to guarantee packages are installed against the active venv. Then I used --only-binary=:all: --force-reinstall to reinstall packages which were previously installed.
+
+All 5 packages were reinstalled and python serve.py --disable-gevent was able to run successfully. After the Alembic migration, the load of plugins, and the Flask development server now started as usual at `http://127.0.0.1:4000`.
+-->
 
 ### [HH:MM]
 
