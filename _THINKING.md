@@ -185,7 +185,11 @@ I solved this by running `python -m pip` to guarantee packages are installed aga
 All 5 packages were reinstalled and python serve.py --disable-gevent was able to run successfully. After the Alembic migration, the load of plugins, and the Flask development server now started as usual at `http://127.0.0.1:4000`.
 -->
 
-### [HH:MM]
+### [23:29]
+<!--
+I needed a specific and catchable error for cases where an account has already solved the challenge rather that treating it as a generic crash and so I added a ChallengeSolveException function in "challenges.py" file in "Tourney/exceptions/challenges" to achieve this I just copied the existing pattern in the file.
+
+-->
 
 ### [HH:MM]
 
