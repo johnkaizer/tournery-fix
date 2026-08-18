@@ -191,7 +191,10 @@ I needed a specific and catchable error for cases where an account has already s
 
 -->
 
-### [HH:MM]
+### [00:07]
+<!-- 
+So if the account has already solved the challenge the database throws a raw IntegrityError and the request crashes, so I updated solve() to handle duplicate solves more graceful and I wrapped the commit in a try/except so that when this happens, we roll back the transaction and raise a more specific ChallengeSolveException instead, while keeping the original error with from e for debugging
+ -->
 
 ## Retrospective
 

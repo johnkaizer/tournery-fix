@@ -1,9 +1,11 @@
 from dataclasses import dataclass
 
 from flask import Blueprint
+from sqlalchemy.exc import IntegrityError
 
 from Tourney.exceptions.challenges import (
     ChallengeCreateException,
+    ChallengeSolveException,
     ChallengeUpdateException,
 )
 from Tourney.models import (
@@ -258,7 +260,13 @@ class BaseChallenge(object):
             provided=submission,
         )
         db.session.add(solve)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError as e:
+            db.session.rollback()
+            raise ChallengeSolveException(
+                "A solve for this account and challenge already exists"
+            ) from e
 
         # If the challenge is dynamic we should calculate a new value
         if challenge.function in DECAY_FUNCTIONS:
