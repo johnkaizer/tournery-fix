@@ -201,6 +201,10 @@ So if the account has already solved the challenge the database throws a raw Int
 
  ### [08:04]
 <!-- So in Tourney\api\v1\submissions.py , when an admin marks a submission as correct, it would always try to create a new solve() row without checking if the player had already solved the challenge and if they had, the database would hit the unique constrain and the request would return a 500. To fix this I added a check for an existing solve using the account_id and challenge_id before inserting a new on. If a solve already exists, it now returns a 400 with success: false and an error message instead of trying to insert another one, and the original submission stays unchanged and if there is no an existing solve, everything continues as before. So no duplicate solve is created -->
+
+### [10:17]
+<!-- I ran python serve.py  and tested the full flow in the browser by logging in as a normal user, finding a challenge, submitting a wrong flag, then submitting the correct flag and logged out. I logged in  in as admin. I then found the wrong submission in the admin panel and tried to re-grade it as correct. Instead of getting a 500 crash, I got the expected error response. I also opened Developer Tools with F12, went to the Network tab, and checked the PATCH request and it returned 400, which shows that the fix works.   -->
+
 ## Retrospective
 
 <!-- After you finish. This section is required.
