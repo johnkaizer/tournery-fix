@@ -208,6 +208,9 @@ So if the account has already solved the challenge the database throws a raw Int
 ### [10:33]
 <!-- I added an automated test to make sure this bug does not come back and the test first creates an existing solve for an account, then tries to solve the same challenge again through the real solve() function and checks that raises the new ChallengeSolveException instead of a raw database error. It also checks that the original solve is still in the database after the rollback. -->
 
+### [10:40]
+<!-- I ran pytest tests/challenges/test_solve.py -v to make sure my new test passed on its own and yes it passed as expected   -->
+
 ## Retrospective
 
 <!-- After you finish. This section is required.
