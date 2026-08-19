@@ -205,6 +205,9 @@ So if the account has already solved the challenge the database throws a raw Int
 ### [10:17]
 <!-- I ran python serve.py  and tested the full flow in the browser by logging in as a normal user, finding a challenge, submitting a wrong flag, then submitting the correct flag and logged out. I logged in  in as admin. I then found the wrong submission in the admin panel and tried to re-grade it as correct. Instead of getting a 500 crash, I got the expected error response. I also opened Developer Tools with F12, went to the Network tab, and checked the PATCH request and it returned 400, which shows that the fix works.   -->
 
+### [10:33]
+<!-- I added an automated test to make sure this bug does not come back and the test first creates an existing solve for an account, then tries to solve the same challenge again through the real solve() function and checks that raises the new ChallengeSolveException instead of a raw database error. It also checks that the original solve is still in the database after the rollback. -->
+
 ## Retrospective
 
 <!-- After you finish. This section is required.
