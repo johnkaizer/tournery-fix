@@ -219,3 +219,10 @@ So if the account has already solved the challenge the database throws a raw Int
      - What you would do differently with more time.
      - What surprised you about this codebase or this task.
      - Anything you tried and threw away, and why. -->
+  <!-- 
+  1. Weakest part: Route 1 relies on the database unique constraint to catch duplicate solves instead of checking for an existing solve first. This works well for concurrent requests, but it depends on that constraint always being there, and this could cause problems if the schema changes. 
+  2. What surprised me: The same duplicate solve issue could happen through two separate paths: the normal solve flow and the admin re-grade endpoint. Fixing one didn't fix the other, so both needed separate changes. I also noticed that account_id is handled as a property in different models rather than just being a simple column.
+  3. What I would  do differently: I tested Route 2 manually but didn't add an automated regression test for it. With more time, I would add one to make sure re-grading an already-solved challenge returns 400 and doesn't change the original submission. I would also check the rest of the codebase for similar duplicate-insert issues.
+  4. What I tried and changed: I considered checking for an existing solve before inserting, but kept the IntegrityError approach because it handles race conditions better two requests can still arrive at the same time even after a pre-check.
+  
+  -->
