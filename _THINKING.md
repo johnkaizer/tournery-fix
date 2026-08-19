@@ -195,7 +195,8 @@ I needed a specific and catchable error for cases where an account has already s
 <!-- 
 So if the account has already solved the challenge the database throws a raw IntegrityError and the request crashes, so I updated solve() to handle duplicate solves more graceful and I wrapped the commit in a try/except so that when this happens, we roll back the transaction and raise a more specific ChallengeSolveException instead, while keeping the original error with from e for debugging
  -->
-
+ ### [07:27]
+<!-- In Tourney\api\v1\challenges.py there was no error handling, so when two correct submissions came in almost at the same time the second one could hit an IntegrityError and crash with a 500 error. I have wrapped chal_class.solve(...) in a try/except ChallengeSolveException and if the challenge was already solved, return the same already_solved response the file already uses instead of creating a new response . I have also added ChallengeSolveException to the existing import from Tourney.exceptions.challenges -->
 ## Retrospective
 
 <!-- After you finish. This section is required.

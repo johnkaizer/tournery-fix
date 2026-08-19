@@ -13,6 +13,7 @@ from Tourney.cache import cache, clear_challenges, clear_ratings, clear_standing
 from Tourney.constants import RawEnum
 from Tourney.exceptions.challenges import (
     ChallengeCreateException,
+    ChallengeSolveException,
     ChallengeUpdateException,
 )
 from Tourney.models import ChallengeFiles as ChallengeFilesModel
@@ -849,9 +850,28 @@ class ChallengeAttempt(Resource):
             if status == "correct" or status is True:
                 # The challenge plugin says the input is right
                 if ctftime() or current_user.is_admin():
-                    chal_class.solve(
-                        user=user, team=team, challenge=challenge, request=request
-                    )
+                    try:
+                        chal_class.solve(
+                            user=user, team=team, challenge=challenge, request=request
+                        )
+                    except ChallengeSolveException:
+                        log(
+                            "submissions",
+                            "[{date}] {name} submitted {submission} on {challenge_id} with kpm {kpm} [ALREADY SOLVED]",
+                            name=user.name,
+                            submission=request_data.get("submission", "").encode(
+                                "utf-8"
+                            ),
+                            challenge_id=challenge_id,
+                            kpm=kpm,
+                        )
+                        return {
+                            "success": True,
+                            "data": {
+                                "status": "already_solved",
+                                "message": f"{message} but you already solved this",
+                            },
+                        }
                     clear_standings()
                     clear_challenges()
 
