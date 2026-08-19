@@ -197,6 +197,10 @@ So if the account has already solved the challenge the database throws a raw Int
  -->
  ### [07:27]
 <!-- In Tourney\api\v1\challenges.py there was no error handling, so when two correct submissions came in almost at the same time the second one could hit an IntegrityError and crash with a 500 error. I have wrapped chal_class.solve(...) in a try/except ChallengeSolveException and if the challenge was already solved, return the same already_solved response the file already uses instead of creating a new response . I have also added ChallengeSolveException to the existing import from Tourney.exceptions.challenges -->
+
+
+ ### [08:04]
+<!-- So in Tourney\api\v1\submissions.py , when an admin marks a submission as correct, it would always try to create a new solve() row without checking if the player had already solved the challenge and if they had, the database would hit the unique constrain and the request would return a 500. To fix this I added a check for an existing solve using the account_id and challenge_id before inserting a new on. If a solve already exists, it now returns a 400 with success: false and an error message instead of trying to insert another one, and the original submission stays unchanged and if there is no an existing solve, everything continues as before. So no duplicate solve is created -->
 ## Retrospective
 
 <!-- After you finish. This section is required.

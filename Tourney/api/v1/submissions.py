@@ -190,6 +190,19 @@ class Submission(Resource):
         submission_type = req.get("type")
 
         if submission_type == "correct":
+            existing_solve = Solves.query.filter_by(
+                account_id=submission.account_id,
+                challenge_id=submission.challenge_id,
+            ).first()
+
+            if existing_solve:
+                return {
+                    "success": False,
+                    "errors": {
+                        "": ["This account has already solved this challenge"]
+                    },
+                }, 400
+
             solve = Solves(
                 user_id=submission.user_id,
                 challenge_id=submission.challenge_id,
